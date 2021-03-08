@@ -20,30 +20,30 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.loan.approver.LoanApprovalApplication;
-import com.loan.approver.dto.LoanApplicationRequest;
-import com.loan.approver.repository.LoanApplicationRepository;
+import com.loan.approver.LoanApplication;
+import com.loan.approver.dto.LoanProcessRequest;
+import com.loan.approver.repository.LoanProcessRepository;
 import com.loan.approver.service.CreditScoreEngine;
 import com.loan.approver.service.EncoderService;
-import com.loan.approver.service.LoanApplicationService;
+import com.loan.approver.service.LoanProcessService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
     webEnvironment = WebEnvironment.DEFINED_PORT,
-    classes = LoanApprovalApplication.class)
+    classes = LoanApplication.class)
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @ActiveProfiles({"test"})
-class LoanApproverApplicationTestsIT {
+class LoanApplicationTestsIT {
   @Autowired private ApplicationContext applicationContext;
-  @Autowired private LoanApplicationService loanApplicationService;
+  @Autowired private LoanProcessService loanProcessService;
   @Autowired private EncoderService encoderService;
   @Autowired private CreditScoreEngine creditScoreEngine;
   @Autowired private MockMvc mockMvc;
 
-  @Autowired private LoanApplicationRepository loanApplicationRepository;
+  @Autowired private LoanProcessRepository loanProcessRepository;
 
-  LoanApplicationRequest loanApplicationRequest;
+  LoanProcessRequest loanProcessRequest;
 
   @LocalServerPort private int port;
 
@@ -51,10 +51,10 @@ class LoanApproverApplicationTestsIT {
 
   @BeforeEach
   public void init() {
-    loanApplicationRequest = new LoanApplicationRequest();
-    loanApplicationRequest.setLoanAmount(190000.00);
-    loanApplicationRequest.setCurrentAnnualIncome(90000.00);
-    loanApplicationRequest.setSsnNumber("018-02-2021");
+	  loanProcessRequest = new LoanProcessRequest();
+	  loanProcessRequest.setLoanAmount(190000.00);
+      loanProcessRequest.setCurrentAnnualIncome(90000.00);
+      loanProcessRequest.setSsnNumber("018022021");
   }
 
   @Test
@@ -68,18 +68,18 @@ class LoanApproverApplicationTestsIT {
         .perform(
             post(APPLY_LOAN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(loanApplicationRequest)))
+                .content(new ObjectMapper().writeValueAsString(loanProcessRequest)))
         .andExpect(status().is2xxSuccessful());
   }
 
   @Test
   void applyLoan_withInvalidParameter_return400() throws Exception {
-    loanApplicationRequest.setSsnNumber("22-02-2021");
+	  loanProcessRequest.setSsnNumber("22022021");
     mockMvc
         .perform(
             post(APPLY_LOAN_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(loanApplicationRequest)))
+                .content(new ObjectMapper().writeValueAsString(loanProcessRequest)))
         .andExpect(status().isBadRequest());
   }
 }

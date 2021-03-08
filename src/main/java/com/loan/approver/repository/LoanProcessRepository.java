@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.loan.approver.model.LoanApplication;
+import com.loan.approver.model.LoanProcess;
 
 @Repository
-public interface LoanApplicationRepository extends JpaRepository<LoanApplication, Integer> {
-  Optional<List<LoanApplication>> findBySsnNumberOrderByApplicationDateTimeDesc(String ssnNumber);
+public interface LoanProcessRepository extends JpaRepository<LoanProcess, Integer> {
+  Optional<List<LoanProcess>> findBySsnNumberOrderByApplicationDateTimeDesc(String ssnNumber);
 
   void deleteBySsnNumber(String ssnNumber);
 }

@@ -9,10 +9,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.loan.approver.controller.LoanProcessController;
-import com.loan.approver.dto.LoanApplicationRequest;
-import com.loan.approver.dto.LoanApplicationResponse;
+import com.loan.approver.dto.LoanProcessRequest;
+import com.loan.approver.dto.LoanProcessResponse;
 import com.loan.approver.enumeration.LoanApprovalStatus;
-import com.loan.approver.service.LoanApplicationService;
+import com.loan.approver.service.LoanProcessService;
 
 import java.util.UUID;
 
@@ -30,22 +30,22 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = LoanProcessController.class)
 @ActiveProfiles("test")
-class LoanApplicationControllerTest {
+class LoanProcessControllerTest {
 
   @Autowired private MockMvc mockMvc;
 
-  @MockBean private LoanApplicationService loanApplicationService;
+  @MockBean private LoanProcessService loanProcessService;
 
   @Test
   void test_success() throws Exception {
-    when(loanApplicationService.process(Mockito.any())).thenReturn(mockedLoanApplicationResponse());
+    when(loanProcessService.process(Mockito.any())).thenReturn(mockedLoanProcessResponse());
 
-    LoanApplicationRequest loanApplicationRequest = new LoanApplicationRequest();
-    loanApplicationRequest.setSsnNumber("018-02-2020");
-    loanApplicationRequest.setCurrentAnnualIncome(10000.00);
-    loanApplicationRequest.setLoanAmount(6000.00);
+    LoanProcessRequest loanProcessRequest = new LoanProcessRequest();
+    loanProcessRequest.setSsnNumber("018022020");
+    loanProcessRequest.setCurrentAnnualIncome(10000.00);
+    loanProcessRequest.setLoanAmount(6000.00);
 
-    String requestJson = new ObjectMapper().writeValueAsString(loanApplicationRequest);
+    String requestJson = new ObjectMapper().writeValueAsString(loanProcessRequest);
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v0/loans/apply")
@@ -63,14 +63,14 @@ class LoanApplicationControllerTest {
 
   @Test
   void test_bad_request() throws Exception {
-    when(loanApplicationService.process(Mockito.any())).thenReturn(mockedLoanApplicationResponse());
+    when(loanProcessService.process(Mockito.any())).thenReturn(mockedLoanProcessResponse());
 
-    LoanApplicationRequest loanApplicationRequest = new LoanApplicationRequest();
-    loanApplicationRequest.setSsnNumber("018-02-202");
-    loanApplicationRequest.setCurrentAnnualIncome(10000.00);
-    loanApplicationRequest.setLoanAmount(6000.00);
+    LoanProcessRequest loanProcessRequest = new LoanProcessRequest();
+    loanProcessRequest.setSsnNumber("018022020");
+    loanProcessRequest.setCurrentAnnualIncome(10000.00);
+    loanProcessRequest.setLoanAmount(6000.00);
 
-    String requestJson = new ObjectMapper().writeValueAsString(loanApplicationRequest);
+    String requestJson = new ObjectMapper().writeValueAsString(loanProcessRequest);
     mockMvc
         .perform(
             MockMvcRequestBuilders.post("/api/v0/loans/apply")
@@ -87,12 +87,12 @@ class LoanApplicationControllerTest {
         .getResponse();
   }
 
-  public LoanApplicationResponse mockedLoanApplicationResponse() {
-    LoanApplicationResponse loanApplicationResponse = new LoanApplicationResponse();
-    loanApplicationResponse.setRequestId(UUID.randomUUID());
-    loanApplicationResponse.setLoanApprovalStatus(LoanApprovalStatus.APPROVED);
-    loanApplicationResponse.setApprovalAmount(5000.00);
-    loanApplicationResponse.setMessage("");
-    return loanApplicationResponse;
+  public LoanProcessResponse mockedLoanProcessResponse() {
+    LoanProcessResponse loanProcessResponse = new LoanProcessResponse();
+    loanProcessResponse.setRequestId(UUID.randomUUID());
+    loanProcessResponse.setLoanApprovalStatus(LoanApprovalStatus.APPROVED);
+    loanProcessResponse.setApprovalAmount(5000.00);
+    loanProcessResponse.setMessage("");
+    return loanProcessResponse;
   }
 }

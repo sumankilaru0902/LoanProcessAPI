@@ -7,7 +7,7 @@ import com.loan.approver.enumeration.LoanApprovalStatus;
 import lombok.Data;
 
 @Data
-public class LoanApplicationResponse {
+public class LoanProcessResponse {
   private UUID requestId;
   private LoanApprovalStatus loanApprovalStatus;
   private Double approvalAmount = 0.00;

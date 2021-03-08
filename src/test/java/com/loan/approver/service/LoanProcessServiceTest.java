@@ -26,23 +26,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.loan.approver.dto.LoanApplicationRequest;
-import com.loan.approver.dto.LoanApplicationResponse;
+import com.loan.approver.dto.LoanProcessRequest;
+import com.loan.approver.dto.LoanProcessResponse;
 import com.loan.approver.enumeration.LoanApprovalStatus;
-import com.loan.approver.model.LoanApplication;
-import com.loan.approver.repository.LoanApplicationRepository;
-import com.loan.approver.service.LoanApplicationService;
+import com.loan.approver.model.LoanProcess;
+import com.loan.approver.repository.LoanProcessRepository;
+import com.loan.approver.service.LoanProcessService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class LoanApplicationServiceTest {
+class LoanProcessServiceTest {
 
   public static final String SSN_NUMBER = "018-02-2020";
   public static final String CREDIT_ENGINE_URL = "http://localhost:8080/api/v0/credit/score";
 
-  @Autowired private LoanApplicationService loanApplicationService;
+  @Autowired private LoanProcessService loanProcessService;
 
-  @MockBean private LoanApplicationRepository loanApplicationRepository;
+  @MockBean private LoanProcessRepository loanProcessRepository;
 
   @MockBean private RestTemplate restTemplate;
 
@@ -53,24 +53,24 @@ class LoanApplicationServiceTest {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
 
-    when(loanApplicationRepository.findBySsnNumberOrderByApplicationDateTimeDesc(anyString()))
+    when(loanProcessRepository.findBySsnNumberOrderByApplicationDateTimeDesc(anyString()))
         .thenReturn(Optional.empty());
-    when(loanApplicationRepository.save(Mockito.any())).thenReturn(mockApprovedLoanApplication());
+    when(loanProcessRepository.save(Mockito.any())).thenReturn(mockApprovedLoanProcess());
     when(restTemplate.exchange(anyString(), Mockito.eq(GET), any(), Mockito.eq(String.class)))
         .thenReturn(ResponseEntity.ok(creditRatingResponse));
 
-    LoanApplicationRequest loanApplicationRequest =new LoanApplicationRequest();
+    LoanProcessRequest loanApplicationRequest =new LoanProcessRequest();
 		    loanApplicationRequest.setSsnNumber(SSN_NUMBER);
-		    loanApplicationRequest = new LoanApplicationRequest();
+		    loanApplicationRequest = new LoanProcessRequest();
 		    loanApplicationRequest.setLoanAmount(100000.00);
 		    loanApplicationRequest.setCurrentAnnualIncome(144000.00);
 
-    LoanApplicationResponse loanApplicationResponse =
-        loanApplicationService.process(loanApplicationRequest);
+    LoanProcessResponse loanApplicationResponse =
+    		loanProcessService.process(loanApplicationRequest);
 
     assertEquals(
         0, loanApplicationResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.APPROVED));
-    verify(loanApplicationRepository,times(1)).save(any());
+    verify(loanProcessRepository,times(1)).save(any());
   }
 
   @Test
@@ -80,25 +80,25 @@ class LoanApplicationServiceTest {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
 
-    ArrayList exitingLoanApplications = new ArrayList();
-    exitingLoanApplications.add(mockApprovedLoanApplication());
-    when(loanApplicationRepository.findBySsnNumberOrderByApplicationDateTimeDesc(anyString()))
-        .thenReturn(Optional.of(exitingLoanApplications));
-    when(loanApplicationRepository.save(Mockito.any())).thenReturn(mockApprovedLoanApplication());
+    ArrayList<LoanProcess> exitingLoanData = new ArrayList<>();
+    exitingLoanData.add(mockApprovedLoanProcess());
+    when(loanProcessRepository.findBySsnNumberOrderByApplicationDateTimeDesc(anyString()))
+        .thenReturn(Optional.of(exitingLoanData));
+    when(loanProcessRepository.save(Mockito.any())).thenReturn(mockApprovedLoanProcess());
     when(restTemplate.exchange(anyString(), Mockito.eq(GET), any(), Mockito.eq(String.class)))
         .thenReturn(ResponseEntity.ok(creditRatingResponse));
 
-    LoanApplicationRequest loanApplicationRequest = new LoanApplicationRequest();
+    LoanProcessRequest loanApplicationRequest = new LoanProcessRequest();
     loanApplicationRequest.setSsnNumber(SSN_NUMBER);
     loanApplicationRequest.setLoanAmount(100000.00);
     loanApplicationRequest.setCurrentAnnualIncome(144000.00);
 
-    LoanApplicationResponse loanApplicationResponse =
-        loanApplicationService.process(loanApplicationRequest);
+    LoanProcessResponse loanApplicationResponse =
+    		loanProcessService.process(loanApplicationRequest);
 
     assertEquals(
         0, loanApplicationResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
-    verify(loanApplicationRepository,times(1)).save(any());
+    verify(loanProcessRepository,times(1)).save(any());
   }
 
   @Test
@@ -108,23 +108,23 @@ class LoanApplicationServiceTest {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
 
-    when(loanApplicationRepository.findBySsnNumberOrderByApplicationDateTimeDesc(anyString()))
+    when(loanProcessRepository.findBySsnNumberOrderByApplicationDateTimeDesc(anyString()))
         .thenReturn(Optional.empty());
-    when(loanApplicationRepository.save(Mockito.any())).thenReturn(mockApprovedLoanApplication());
+    when(loanProcessRepository.save(Mockito.any())).thenReturn(mockApprovedLoanProcess());
     when(restTemplate.exchange(anyString(), Mockito.eq(GET), any(), Mockito.eq(String.class)))
         .thenReturn(ResponseEntity.ok(creditRatingResponse));
 
-    LoanApplicationRequest loanApplicationRequest = new LoanApplicationRequest();
+    LoanProcessRequest loanApplicationRequest = new LoanProcessRequest();
     loanApplicationRequest.setSsnNumber(SSN_NUMBER);
     loanApplicationRequest.setLoanAmount(100000.00);
     loanApplicationRequest.setCurrentAnnualIncome(144000.00);
 
-    LoanApplicationResponse loanApplicationResponse =
-        loanApplicationService.process(loanApplicationRequest);
+    LoanProcessResponse loanApplicationResponse =
+    		loanProcessService.process(loanApplicationRequest);
 
     assertEquals(
         0, loanApplicationResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
-    verify(loanApplicationRepository,times(1)).save(any());
+    verify(loanProcessRepository,times(1)).save(any());
   }
 
   @Test
@@ -134,27 +134,27 @@ class LoanApplicationServiceTest {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
 
-    when(loanApplicationRepository.findBySsnNumberOrderByApplicationDateTimeDesc(anyString()))
+    when(loanProcessRepository.findBySsnNumberOrderByApplicationDateTimeDesc(anyString()))
         .thenReturn(Optional.empty());
-    when(loanApplicationRepository.save(Mockito.any())).thenReturn(mockApprovedLoanApplication());
+    when(loanProcessRepository.save(Mockito.any())).thenReturn(mockApprovedLoanProcess());
     when(restTemplate.exchange(anyString(), Mockito.eq(GET), any(), Mockito.eq(String.class)))
         .thenReturn(ResponseEntity.badRequest().body(creditRatingResponse));
 
-    LoanApplicationRequest loanApplicationRequest = new LoanApplicationRequest();
+    LoanProcessRequest loanApplicationRequest = new LoanProcessRequest();
     loanApplicationRequest.setSsnNumber(SSN_NUMBER);
     loanApplicationRequest.setLoanAmount(100000.00);
     loanApplicationRequest.setCurrentAnnualIncome(144000.00);
 
-    LoanApplicationResponse loanApplicationResponse =
-        loanApplicationService.process(loanApplicationRequest);
+    LoanProcessResponse loanApplicationResponse =
+    		loanProcessService.process(loanApplicationRequest);
 
     assertEquals(
         0, loanApplicationResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
-    verify(loanApplicationRepository,times(1)).save(any());
+    verify(loanProcessRepository,times(1)).save(any());
   }
 
-  public LoanApplication mockApprovedLoanApplication() {
-    LoanApplication loanApplication = new LoanApplication();
+  public LoanProcess mockApprovedLoanProcess() {
+    LoanProcess loanApplication = new LoanProcess();
     loanApplication.setCurrentAnnualIncome(60000.00);
     loanApplication.setRequestedAmount(40000.00);
     loanApplication.setId(UUID.randomUUID());
@@ -166,16 +166,16 @@ class LoanApplicationServiceTest {
     return loanApplication;
   }
 
-  public LoanApplication mockRejectedLoanApplication() {
-    LoanApplication loanApplication = new LoanApplication();
-    loanApplication.setCurrentAnnualIncome(60000.00);
-    loanApplication.setRequestedAmount(40000.00);
-    loanApplication.setId(UUID.randomUUID());
-    loanApplication.setSsnNumber(SSN_NUMBER);
-    loanApplication.setSanctionedAmount(0.00);
-    loanApplication.setLoanApprovalStatus(LoanApprovalStatus.REJECTED);
-    loanApplication.setMessage("");
-    loanApplication.setApplicationDateTime(LocalDateTime.now(Clock.systemUTC()));
-    return loanApplication;
+  public LoanProcess mockRejectedLoanProcess() {
+    LoanProcess loanProcess = new LoanProcess();
+    loanProcess.setCurrentAnnualIncome(60000.00);
+    loanProcess.setRequestedAmount(40000.00);
+    loanProcess.setId(UUID.randomUUID());
+    loanProcess.setSsnNumber(SSN_NUMBER);
+    loanProcess.setSanctionedAmount(0.00);
+    loanProcess.setLoanApprovalStatus(LoanApprovalStatus.REJECTED);
+    loanProcess.setMessage("");
+    loanProcess.setApplicationDateTime(LocalDateTime.now(Clock.systemUTC()));
+    return loanProcess;
   }
 }

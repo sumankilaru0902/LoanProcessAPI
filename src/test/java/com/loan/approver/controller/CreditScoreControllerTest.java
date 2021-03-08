@@ -26,7 +26,7 @@ class CreditScoreControllerTest {
 
   @Test
   void getCreditRating() throws Exception {
-    CreditRatingRequest createRatingRequest = new CreditRatingRequest("598-07-7771");
+    CreditRatingRequest createRatingRequest = new CreditRatingRequest("598077771");
     String requestJson = new ObjectMapper().writeValueAsString(createRatingRequest);
     mockMvc
         .perform(
