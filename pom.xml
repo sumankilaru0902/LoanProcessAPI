@@ -11,7 +11,7 @@
     <groupId>org.deb</groupId>
     <artifactId>LoanProcessAPI</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>LoanApprover</name>
+    <name>LoanProcessAPI</name>
     <description>Credit application project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
@@ -40,10 +40,10 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.16.6</version>
+		</dependency>
         <!-- For encoding SSN -->
         <dependency>
             <groupId>commons-codec</groupId>
@@ -80,7 +80,10 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.4.8</version>
         </dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
