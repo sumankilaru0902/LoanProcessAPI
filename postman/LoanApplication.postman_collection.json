@@ -1,0 +1,112 @@
+{
+	"info": {
+		"_postman_id": "d69ca759-afc1-4361-aacd-5fa52c5437c5",
+		"name": "LoanApplication",
+		"description": "To process loan application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "loanApplicaiton",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"ssnNumber\": \"198-50-001\",\n   \"loanAmount\": 99999.99,\n   \"currentAnnualIncome\": 180000.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v0/loans/apply",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v0",
+						"loans",
+						"apply"
+					]
+				},
+				"description": "Credit score rating"
+			},
+			"response": []
+		},
+		{
+			"name": "loanApplicaiton bad request (invalid SSN)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"ssnNumber\": \"198-50-00\",\n   \"loanAmount\": 99999.99,\n   \"currentAnnualIncome\": 180000.00\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v0/loans/apply",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v0",
+						"loans",
+						"apply"
+					]
+				},
+				"description": "Credit score rating"
+			},
+			"response": []
+		},
+		{
+			"name": "Get credit rating",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"ssnNumber\": \"007-19-1971\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v0/credit/score",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v0",
+						"credit",
+						"score"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

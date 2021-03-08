@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.deb</groupId>
-    <artifactId>LoanProcess</artifactId>
+    <artifactId>LoanProcessAPI</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>LoanApprover</name>
     <description>Credit application project for Spring Boot</description>
