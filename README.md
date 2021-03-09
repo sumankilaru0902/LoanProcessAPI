@@ -47,5 +47,5 @@ Formatting follow Google Java Format and enforced with ```verify``` phase of mav
 
 #### Swagger documentation
 Run the application with command
-###```mvn spring-boot:run```
-###[API documentation](http://localhost:8080/swagger-ui.html)
+*```mvn spring-boot:run```
+*[API documentation](http://localhost:8080/swagger-ui.html)
