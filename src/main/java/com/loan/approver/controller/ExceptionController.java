@@ -26,7 +26,7 @@ import com.loan.approver.dto.ErrorResponse;
 @ControllerAdvice
 public class ExceptionController {
 
-  private static final String APP_NAME = "LoanApprover";
+  private static final String APP_NAME = "LoanProcessAPI";
 
   /**
    * Handle constraint violation in inputs.

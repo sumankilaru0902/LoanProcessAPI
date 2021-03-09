@@ -74,7 +74,8 @@ class LoanApplicationTestsIT {
 
   @Test
   void applyLoan_withInvalidParameter_return400() throws Exception {
-	  loanProcessRequest.setSsnNumber("22022021");
+	  loanProcessRequest = new LoanProcessRequest();
+	  loanProcessRequest.setSsnNumber("09032021");
     mockMvc
         .perform(
             post(APPLY_LOAN_ENDPOINT)

@@ -31,13 +31,12 @@ import com.loan.approver.dto.LoanProcessResponse;
 import com.loan.approver.enumeration.LoanApprovalStatus;
 import com.loan.approver.model.LoanProcess;
 import com.loan.approver.repository.LoanProcessRepository;
-import com.loan.approver.service.LoanProcessService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class LoanProcessServiceTest {
 
-  public static final String SSN_NUMBER = "018-02-2020";
+  public static final String SSN_NUMBER = "018022020";
   public static final String CREDIT_ENGINE_URL = "http://localhost:8080/api/v0/credit/score";
 
   @Autowired private LoanProcessService loanProcessService;
@@ -59,17 +58,16 @@ class LoanProcessServiceTest {
     when(restTemplate.exchange(anyString(), Mockito.eq(GET), any(), Mockito.eq(String.class)))
         .thenReturn(ResponseEntity.ok(creditRatingResponse));
 
-    LoanProcessRequest loanApplicationRequest =new LoanProcessRequest();
-		    loanApplicationRequest.setSsnNumber(SSN_NUMBER);
-		    loanApplicationRequest = new LoanProcessRequest();
-		    loanApplicationRequest.setLoanAmount(100000.00);
-		    loanApplicationRequest.setCurrentAnnualIncome(144000.00);
+    LoanProcessRequest loanProcessRequest =new LoanProcessRequest();
+		   loanProcessRequest.setSsnNumber(SSN_NUMBER);
+		   loanProcessRequest.setLoanAmount(100000.00);
+		   loanProcessRequest.setCurrentAnnualIncome(144000.00);
 
-    LoanProcessResponse loanApplicationResponse =
-    		loanProcessService.process(loanApplicationRequest);
+    LoanProcessResponse loanProcessResponse =
+    		loanProcessService.process(loanProcessRequest);
 
     assertEquals(
-        0, loanApplicationResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.APPROVED));
+        0, loanProcessResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.APPROVED));
     verify(loanProcessRepository,times(1)).save(any());
   }
 
@@ -88,16 +86,16 @@ class LoanProcessServiceTest {
     when(restTemplate.exchange(anyString(), Mockito.eq(GET), any(), Mockito.eq(String.class)))
         .thenReturn(ResponseEntity.ok(creditRatingResponse));
 
-    LoanProcessRequest loanApplicationRequest = new LoanProcessRequest();
-    loanApplicationRequest.setSsnNumber(SSN_NUMBER);
-    loanApplicationRequest.setLoanAmount(100000.00);
-    loanApplicationRequest.setCurrentAnnualIncome(144000.00);
+    LoanProcessRequest loanProcessRequest = new LoanProcessRequest();
+    loanProcessRequest.setSsnNumber(SSN_NUMBER);
+    loanProcessRequest.setLoanAmount(100000.00);
+    loanProcessRequest.setCurrentAnnualIncome(144000.00);
 
-    LoanProcessResponse loanApplicationResponse =
-    		loanProcessService.process(loanApplicationRequest);
+    LoanProcessResponse loanProcessResponse =
+    		loanProcessService.process(loanProcessRequest);
 
     assertEquals(
-        0, loanApplicationResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
+        0, loanProcessResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
     verify(loanProcessRepository,times(1)).save(any());
   }
 
@@ -114,16 +112,16 @@ class LoanProcessServiceTest {
     when(restTemplate.exchange(anyString(), Mockito.eq(GET), any(), Mockito.eq(String.class)))
         .thenReturn(ResponseEntity.ok(creditRatingResponse));
 
-    LoanProcessRequest loanApplicationRequest = new LoanProcessRequest();
-    loanApplicationRequest.setSsnNumber(SSN_NUMBER);
-    loanApplicationRequest.setLoanAmount(100000.00);
-    loanApplicationRequest.setCurrentAnnualIncome(144000.00);
+    LoanProcessRequest loanProcessRequest = new LoanProcessRequest();
+    loanProcessRequest.setSsnNumber(SSN_NUMBER);
+    loanProcessRequest.setLoanAmount(100000.00);
+    loanProcessRequest.setCurrentAnnualIncome(144000.00);
 
-    LoanProcessResponse loanApplicationResponse =
-    		loanProcessService.process(loanApplicationRequest);
+    LoanProcessResponse loanProcessResponse =
+    		loanProcessService.process(loanProcessRequest);
 
     assertEquals(
-        0, loanApplicationResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
+        0, loanProcessResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
     verify(loanProcessRepository,times(1)).save(any());
   }
 
@@ -140,16 +138,16 @@ class LoanProcessServiceTest {
     when(restTemplate.exchange(anyString(), Mockito.eq(GET), any(), Mockito.eq(String.class)))
         .thenReturn(ResponseEntity.badRequest().body(creditRatingResponse));
 
-    LoanProcessRequest loanApplicationRequest = new LoanProcessRequest();
-    loanApplicationRequest.setSsnNumber(SSN_NUMBER);
-    loanApplicationRequest.setLoanAmount(100000.00);
-    loanApplicationRequest.setCurrentAnnualIncome(144000.00);
+    LoanProcessRequest loanProcessRequest = new LoanProcessRequest();
+    loanProcessRequest.setSsnNumber(SSN_NUMBER);
+    loanProcessRequest.setLoanAmount(100000.00);
+    loanProcessRequest.setCurrentAnnualIncome(144000.00);
 
-    LoanProcessResponse loanApplicationResponse =
-    		loanProcessService.process(loanApplicationRequest);
+    LoanProcessResponse loanProcessResponse =
+    		loanProcessService.process(loanProcessRequest);
 
     assertEquals(
-        0, loanApplicationResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
+        0, loanProcessResponse.getLoanApprovalStatus().compareTo(LoanApprovalStatus.REJECTED));
     verify(loanProcessRepository,times(1)).save(any());
   }
 

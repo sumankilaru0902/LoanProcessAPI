@@ -14,6 +14,8 @@ import com.loan.approver.dto.LoanProcessResponse;
 import com.loan.approver.enumeration.LoanApprovalStatus;
 import com.loan.approver.service.LoanProcessService;
 
+import lombok.val;
+
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -63,7 +66,10 @@ class LoanProcessControllerTest {
 
   @Test
   void test_bad_request() throws Exception {
-    when(loanProcessService.process(Mockito.any())).thenReturn(mockedLoanProcessResponse());
+	  
+	@SuppressWarnings("deprecation")
+	val httpMessageNotReadableException = new HttpMessageNotReadableException("ssnNumber - Please provide proper SSN");
+    when(loanProcessService.process(Mockito.any())).thenThrow(httpMessageNotReadableException);
 
     LoanProcessRequest loanProcessRequest = new LoanProcessRequest();
     loanProcessRequest.setSsnNumber("018022020");
@@ -77,7 +83,7 @@ class LoanProcessControllerTest {
                 .contentType("application/json")
                 .content(requestJson))
         .andDo(print())
-        .andExpect(jsonPath("$..Source").value("LoanApprover"))
+        .andExpect(jsonPath("$..Source").value("LoanProcessAPI"))
         .andExpect(jsonPath("$..ReasonCode").value("400 BAD_REQUEST"))
         .andExpect(jsonPath("$..Description").value("Bad Request"))
         .andExpect(jsonPath("$..Details").value("ssnNumber - Please provide proper SSN"))
